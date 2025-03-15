@@ -7,18 +7,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # Paso 1: Checkout del código
     - uses: actions/checkout@v2
 
+    # Paso 2: Configurar Python
     - name: Configurar Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.13.2'
-    
+        python-version: '3.13.2' # Versión válida
+
+    # Paso 3: Instalar dependencias
     - name: Instalar dependencias
       run: |
         python -m pip install --upgrade pip
-        pip install requests pandas
+        pip install requests pandas jupyter
 
+    # Paso 4: Convertir y ejecutar Script_Brewery.ipynb
     - name: Ejecutar script
       run: |
-        python Script_Brewery.ipynb
+        jupyter nbconvert --to script ./tarea_2_BigData/Script_Brewery.ipynb
+        python ./tarea_2_BigData/Script_Brewery.py
+
+    # Paso 5: Convertir y ejecutar Script_Brewery_errores.ipynb
+    - name: Contaminacion base datos
+      run: |
+        jupyter nbconvert --to script ./tarea_2_BigData/Script_Brewery_errores.ipynb
+        python ./tarea_2_BigData/Script_Brewery_errores.py
+
+    # Paso 6: Ejecutar limpieza de datos
+    - name: Limpieza de datos
+      run: |
+        python ./tarea_2_BigData/limpieza.py
